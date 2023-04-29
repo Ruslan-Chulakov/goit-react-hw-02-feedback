@@ -3,7 +3,6 @@ import Section from "./Section";
 import FeedbackOptions from "./FeedbackOptions";
 import Statictics from "./Statistics";
 import Notification from "./Notification";
-import buttonAnimation from "utils/buttonAnimation";
 
 export class App extends Component {
   state = {
@@ -27,7 +26,7 @@ export class App extends Component {
 
   countPositiveFeedbackPercentage = () => {
     const { good, neutral, bad } = this.state;
-    return ((good * 100) / (good + neutral + bad)).toFixed(0);
+    return Math.round((good * 100) / (good + neutral + bad));
   };
 
   render() {
@@ -35,8 +34,8 @@ export class App extends Component {
     const total = good + neutral + bad;
 
     return (
-      <div className="container" onMouseMove={buttonAnimation}>
-        <Section title={'Please leave feedback'}>
+      <div className="container">
+        <Section title='Please leave feedback'>
           <FeedbackOptions
             options={Object.keys(this.state)}
             onLeaveFeedback={this.handleFeedback}
@@ -53,7 +52,7 @@ export class App extends Component {
               positivePercentage={this.countPositiveFeedbackPercentage()}
             />
           )}
-          {total === 0 && (
+          {!total && (
             <Notification message="There is no feedback"></Notification>
           )}
         </Section>
